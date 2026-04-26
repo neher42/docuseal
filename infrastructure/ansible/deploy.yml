@@ -1,0 +1,42 @@
+- name: Clone Repository
+  hosts: "{{ target_host }}"
+  become: yes
+  tasks:
+    - name: Clone repository
+      git:
+        repo: "{{ repo_url }}"
+        dest: /home/ubuntu/docuseal
+        update: yes
+        force: yes
+      become_user: ubuntu
+
+- name: Create .env file
+  hosts: "{{ target_host }}"
+  tasks:
+    - name: Create .env file
+      template:
+        src: templates/.env.j2
+        dest: /home/ubuntu/docuseal/.env
+        owner: ubuntu
+        group: ubuntu
+        mode: '0600'
+
+
+- name: Start application services
+  hosts: "{{ target_host }}"
+  tasks:
+    - name: Pull latest images
+      community.docker.docker_compose_v2:
+        project_src: /home/ubuntu/docuseal
+        files:
+          - compose.prod.yml
+        pull: always
+
+    - name: Recreate containers with latest images
+      community.docker.docker_compose_v2:
+        project_src: /home/ubuntu/docuseal
+        files:
+          - compose.prod.yml
+        state: present
+        recreate: always
+      register: output
