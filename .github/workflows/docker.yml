@@ -2,11 +2,15 @@ name: Build Docker Images
 
 on:
   workflow_dispatch:
-  # TODO: trigger this workflow automatically on pushes to the main branch
-  # (hint: add a `push:` block with a `branches:` filter)
+  # TODO: also trigger this workflow automatically after the "CI" workflow
+  # finishes on the main branch so we only build images when linting/tests pass.
+  # (hint: add a `workflow_run:` trigger with
+  #  `workflows: ["CI"]`, `types: [completed]`, `branches: [main]`)
 
 jobs:
   build:
+    # TODO: skip this job unless the triggering CI run actually passed.
+    # See `update-services.yml` for the pattern.
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
