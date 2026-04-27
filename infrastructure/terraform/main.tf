@@ -1,4 +1,5 @@
 terraform {
+  # TODO: change `organization` to your own Terraform Cloud org
   cloud {
     organization = "StarlinerDev"
     workspaces {

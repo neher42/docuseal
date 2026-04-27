@@ -29,14 +29,14 @@
       community.docker.docker_compose_v2:
         project_src: /home/ubuntu/docuseal
         files:
-          - compose.prod.yml
+          - docker-compose.yml
         pull: always
 
     - name: Recreate containers with latest images
       community.docker.docker_compose_v2:
         project_src: /home/ubuntu/docuseal
         files:
-          - compose.prod.yml
+          - docker-compose.yml
         state: present
         recreate: always
       register: output
