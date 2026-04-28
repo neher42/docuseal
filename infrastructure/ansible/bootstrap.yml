@@ -2,23 +2,6 @@
   hosts: "{{ target_host }}"
   become: true
   tasks:
-    - name: Install aptitude
-      apt:
-        name: aptitude
-        state: latest
-        update_cache: true
-
-    - name: Install required system packages
-      apt:
-        pkg:
-          - curl
-          - software-properties-common
-          - python3-pip
-          - virtualenv
-          - python3-setuptools
-        state: latest
-        update_cache: true
-
     - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -97,4 +80,3 @@
       community.docker.docker_compose_v2:
         project_src: /home/ubuntu/docuseal
         files: "docker-compose.yml"
-      register: output

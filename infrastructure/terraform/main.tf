@@ -21,19 +21,17 @@ provider "hcloud" {
 
 resource "hcloud_ssh_key" "default" {
   name       = "workshop-terraform-key"
-  public_key = var.ssh_public_key
+  # TODO: assign the public key you exported to an environment variable
+  public_key = ___
 }
 
 resource "hcloud_server" "csee_server" {
-  name = "csee-server"
-  image = var.os_type
-  server_type = var.server_type
-  location = var.location
+  # TODO: each of these should reference a variable defined in vars.tf
+  name = ___
+  image = ___
+  server_type = ___
+  location = ___
   ssh_keys = [hcloud_ssh_key.default.id]
-  keep_disk = true
-  labels = {
-    project = "csee"
-  }
 }
 
 output "csee_server_ip" {

@@ -1,14 +1,22 @@
-variable "hcloud_token" {
-  type = string
-  sensitive = true
-}
+  variable "hcloud_token" {
+    type        = string
+    sensitive   = true # Terraform redacts it in human-facing output
+  }
 
-variable "ssh_public_key" {
-  type = string
-}
+  variable "ssh_public_key" {
+    type        = string
+  }
 
-variable "location" {}
+  variable "location" {
+    type        = string
+  }
 
-variable "server_type" {}
+  variable "server_type" {
+    type        = string
+  }
 
-variable "os_type" {}
+  variable "os_type" {
+    type        = string
+  }
+
+# TODO: add "name" variable definition
