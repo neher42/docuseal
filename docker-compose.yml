@@ -13,6 +13,14 @@ services:
     environment:
       - FORCE_SSL=${HOST}
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/docuseal
+    networks:
+      - docuseal_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.docuseal.rule=Host(`${HOST}`)" 
+      - "traefik.http.routers.docuseal.entrypoints=websecure"
+      - "traefik.http.routers.docuseal.tls.certresolver=letsencrypt"
+      - "traefik.http.services.docuseal.loadbalancer.server.port=3000"
 
   postgres:
     image: postgres:18
@@ -27,6 +35,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - docuseal_net
 
   traefik:
     image: traefik:latest
@@ -46,3 +56,8 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"
+
+networks:
+  docuseal_net:
+    name: docuseal_net
+    external: false
