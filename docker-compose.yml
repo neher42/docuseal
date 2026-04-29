@@ -56,6 +56,8 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"
+    networks:
+      - docuseal_net
 
 networks:
   docuseal_net:
