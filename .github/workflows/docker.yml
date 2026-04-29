@@ -2,10 +2,10 @@ name: Build Docker Images
 
 on:
   workflow_dispatch:
-  # TODO: also trigger this workflow automatically after the "CI" workflow
-  # finishes on the main branch so we only build images when linting/tests pass.
+  # TODO: Also trigger this workflow automatically after the "CI" workflow
+  # finishes on the `workshop` branch so we only build images when linting/tests pass.
   # (hint: add a `workflow_run:` trigger with
-  #  `workflows: ["CI"]`, `types: [completed]`, `branches: [main]`)
+  #  `workflows: ["CI"]`, `types: [completed]`, `branches: [workshop]`)
 
 jobs:
   build:
@@ -16,12 +16,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v6
 
-    # Buildx is required to build for multiple architectures (amd64 + arm64)
     - name: Setup Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      uses: docker/setup-buildx-action@v4
 
     - name: Login to GitHub Container Registry
-      uses: docker/login-action@v3
+      uses: docker/login-action@v4
       with:
         # TODO: authenticate against the github container registry
         registry: # <registry-name>
@@ -29,13 +28,13 @@ jobs:
         password: # <github-access-token>
 
     - name: Build and push Docker image
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         # TODO: should this push to the registry, or just build locally? Set a boolean value.
         push: # true | false
-        # TODO: what platforms should the image be built for?
-        platforms: # <platform1>,<platform2>
+        # TODO: what platform should the image be built for?
+        platforms: # <platform1>
         # TODO: set this to the GHCR image path
         # (hint: `${{ github.repository }}` expands to <owner>/<repo>)
         tags: # <path>

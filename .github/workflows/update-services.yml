@@ -1,8 +1,8 @@
 name: Update Services
-# TODO: change to run after the docker images are built
-on:
-  workflow_dispatch:
 
+on:
+  # TODO: change to run after the docker images are built
+  workflow_dispatch:
 
 jobs:
   update:
