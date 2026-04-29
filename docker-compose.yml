@@ -28,7 +28,7 @@ services:
       timeout: 5s
       retries: 5
 
-traefik:
+  traefik:
     image: traefik:v3.0
     command:
       - "--providers.docker=true"
