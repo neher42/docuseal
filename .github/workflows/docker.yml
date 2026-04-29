@@ -2,15 +2,16 @@ name: Build Docker Images
 
 on:
   workflow_dispatch:
-  # TODO: Also trigger this workflow automatically after the "CI" workflow
-  # finishes on the `workshop` branch so we only build images when linting/tests pass.
-  # (hint: add a `workflow_run:` trigger with
-  #  `workflows: ["CI"]`, `types: [completed]`, `branches: [workshop]`)
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [workshop]
 
 jobs:
   build:
-    # TODO: skip this job unless the triggering CI run actually passed.
-    # See `update-services.yml` for the pattern.
+    # Skip if triggered by a failing CI run. workflow_dispatch always runs
+    # (manual triggers bypass the CI gate by design).
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -22,22 +23,17 @@ jobs:
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v4
       with:
-        # TODO: authenticate against the github container registry
-        registry: # <registry-name>
+        registry: ghcr.io
         username: ${{ github.actor }}
-        password: # <github-access-token>
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v7
       with:
         context: .
-        # TODO: should this push to the registry, or just build locally? Set a boolean value.
-        push: # true | false
-        # TODO: what platform should the image be built for?
-        platforms: # <platform1>
-        # TODO: set this to the GHCR image path
-        # (hint: `${{ github.repository }}` expands to <owner>/<repo>)
-        tags: # <path>
+        push: true
+        platforms: linux/amd64
+        tags: ghcr.io/${{ github.repository }}:latest
         # Layer caching: speeds up rebuilds by reusing unchanged layers from a previous push
         cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:cache
         cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:cache,mode=max
