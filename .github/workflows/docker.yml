@@ -2,16 +2,15 @@ name: Build Docker Images
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["CI"]
-    types: [completed]
-    branches: [workshop]
+  # TODO: Also trigger this workflow automatically after the "CI" workflow
+  # finishes on the `workshop` branch so we only build images when linting/tests pass.
+  # (hint: add a `workflow_run:` trigger with
+  #  `workflows: ["CI"]`, `types: [completed]`, `branches: [workshop]`)
 
 jobs:
   build:
-    # Skip if triggered by a failing CI run. workflow_dispatch always runs
-    # (manual triggers bypass the CI gate by design).
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    # TODO: skip this job unless the triggering CI run actually passed.
+    # See `update-services.yml` for the pattern.
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -23,17 +22,21 @@ jobs:
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v4
       with:
-        registry: ghcr.io
+        # TODO: authenticate against the github container registry
+        registry: # <registry-name>
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: # <github-access-token>
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v7
       with:
         context: .
         push: true
-        platforms: linux/amd64
-        tags: ghcr.io/${{ github.repository }}:latest
+        # TODO: what platform should the image be built for?
+        platforms: # <platform>
+        # TODO: set this to the GHCR image path
+        # (hint: `${{ github.repository }}` expands to <owner>/<repo>)
+        tags: # <image identifier>
         # Layer caching: speeds up rebuilds by reusing unchanged layers from a previous push
         cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:cache
         cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:cache,mode=max
