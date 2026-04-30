@@ -42,4 +42,24 @@
         group: ubuntu
         mode: '0600'
 
+- name: Ensure letsencrypt directory and acme.json exist with correct permissions
+  hosts: "{{ target_host }}"
+  become: yes
+  tasks:
+    - name: Create letsencrypt directory
+      file:
+        path: /home/ubuntu/docuseal/letsencrypt
+        state: directory
+        mode: '0755'
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Create acme.json with strict permissions
+      file:
+        path: /home/ubuntu/docuseal/letsencrypt/acme.json
+        state: touch
+        mode: '0600'
+        owner: ubuntu
+        group: ubuntu
+
 # TODO: Add the step to run docker compose to start the application
