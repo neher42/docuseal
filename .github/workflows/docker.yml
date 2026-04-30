@@ -14,5 +14,5 @@ jobs:
     # (manual triggers bypass the CI gate by design).
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    steps:
     # TODO: Add the steps to build and push the docker image to ghcr
+    # steps:
