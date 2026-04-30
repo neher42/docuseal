@@ -2,50 +2,7 @@
   hosts: "{{ target_host }}"
   become: true
   tasks:
-    - name: Install prerequisites
-      apt:
-        # TODO: same packages you ran `apt install ___ ___` for in your shell setup.
-        pkg: [___, ___]
-        state: present
-        update_cache: true
-
-    - name: Ensure /etc/apt/keyrings exists
-      file:
-        path: /etc/apt/keyrings
-        state: directory
-        mode: '0755'
-
-    - name: Download Docker GPG key
-      get_url:
-        # TODO: the same URL you curl'd from in your shell setup.
-        url: ___
-        dest: /etc/apt/keyrings/docker.asc
-        mode: '0644'
-
-    - name: Add Docker apt sources
-      copy:
-        dest: /etc/apt/sources.list.d/docker.sources
-        content: |
-          Types: deb
-          URIs: https://download.docker.com/linux/ubuntu
-          Suites: {{ ansible_distribution_release }}
-          Components: stable
-          Architectures: amd64
-          Signed-By: /etc/apt/keyrings/docker.asc
-        mode: '0644'
-
-    - name: Install docker and supporting packages
-      apt:
-        # TODO: same package list from Docker's install docs (starts with docker-ce).
-        pkg: [___, ___, ___, ___, ___]
-        state: latest
-        update_cache: true
-
-    - name: Start docker daemon
-      systemd:
-        name: docker
-        state: started
-        enabled: true
+    # TODO: Add the tasks to install and start Docker
 
 - name: Create new Linux User
   hosts: "{{ target_host }}"
@@ -72,16 +29,7 @@
         owner: ubuntu
         group: ubuntu
 
-    - name: Clone repository
-      git:
-        # TODO: Take a look at the command to execute the playbook.
-        # There you pass a repo URL variable via `-e repo_url=...`
-        # Reference it here with "{{ <var_name> }}"
-        repo: ___
-        dest: /home/ubuntu/docuseal
-        clone: yes
-        update: yes
-      become_user: ubuntu
+    # TODO: Add the task to clone your repository
 
 - name: Create .env file
   hosts: "{{ target_host }}"
@@ -94,10 +42,4 @@
         group: ubuntu
         mode: '0600'
 
-- name: Start application services
-  hosts: "{{ target_host }}"
-  tasks:
-    - name: Start containers
-      community.docker.docker_compose_v2:
-        project_src: /home/ubuntu/docuseal
-        files: "docker-compose.yml"
+# TODO: Add the step to run docker compose to start the application
