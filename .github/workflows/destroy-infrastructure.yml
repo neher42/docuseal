@@ -25,4 +25,4 @@ jobs:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN }}
         run: |
           terraform init
-          terraform destroy -var-file="values.tfvars" -auto-approve
+          terraform destroy -var-file="terraform.tfvars" -auto-approve
