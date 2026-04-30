@@ -18,7 +18,7 @@ RSpec.describe 'App Setup' do
 
   it 'shows the setup page' do
     # TODO: Adjust the test to reflect your changes
-    expect(page).to have_content('Initial Setup')
+    expect(page).to have_content('Hello World')
 
     ['First name', 'Last name', 'Email', 'Company name', 'Password', 'App URL'].each do |field|
       expect(page).to have_field(field)
