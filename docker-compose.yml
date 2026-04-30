@@ -39,7 +39,7 @@ services:
       - docuseal_net
 
   traefik:
-    image: traefik::3.6.15
+    image: traefik:3.6.15
     command:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
