@@ -20,3 +20,6 @@ variable "os_type" {
 }
 
 # TODO: add "name" variable definition
+variable "name" {
+  type        = string
+}
